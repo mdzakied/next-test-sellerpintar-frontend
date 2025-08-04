@@ -10,15 +10,28 @@ export const login = async (username, password) => {
     localStorage.setItem("token", token);
     localStorage.setItem("role", role);
 
-    console.log(res);
-
-
-    return { success: true, message:"Login successful", role };
+    return { success: true, message: "Login successful", role };
   } catch (error) {
     console.error("Login error:", error);
     return {
       success: false,
       message: error.response?.data?.error || "Login failed",
+    };
+  }
+};
+
+export const registerAccount = async (username, password, role) => {
+  try {
+    const res = await api.post("/auth/register", { username, password, role });
+
+    const newUser = res.data.username;
+
+    return { success: true, message: "Register successful", newUser };
+  } catch (error) {
+    console.error("Register error:", error);
+    return {
+      success: false,
+      message: error.response?.data?.error || "Register failed",
     };
   }
 };
